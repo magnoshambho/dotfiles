@@ -25,16 +25,6 @@ return now(function()
     },
   })
 
-  -- Completion plugin and dependencies
-  -- Load these first so cmp_nvim_lsp is available for LSP config
-  MiniDeps.add('hrsh7th/nvim-cmp')
-  MiniDeps.add('hrsh7th/cmp-nvim-lsp')
-  MiniDeps.add('hrsh7th/cmp-buffer')
-  MiniDeps.add('hrsh7th/cmp-path')
-  MiniDeps.add('hrsh7th/cmp-cmdline')
-  MiniDeps.add('L3MON4D3/LuaSnip')
-  MiniDeps.add('saadparwaiz1/cmp_luasnip')
-
   -- Mason for LSP, formatters and linters management
   MiniDeps.add('williamboman/mason.nvim')
   MiniDeps.add('williamboman/mason-lspconfig.nvim')
@@ -83,14 +73,8 @@ return now(function()
     })
   end
   
-  -- Get capabilities from cmp_nvim_lsp if available
-  local capabilities
-  local has_cmp_nvim_lsp, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
-  if has_cmp_nvim_lsp then
-    capabilities = cmp_nvim_lsp.default_capabilities()
-  else
-    capabilities = vim.lsp.protocol.make_client_capabilities()
-  end
+  -- Basic capabilities without cmp_nvim_lsp
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
   
   -- Server-specific settings
   local servers = {
@@ -139,86 +123,4 @@ return now(function()
     config.capabilities = capabilities
     lspconfig[server_name].setup(config)
   end
-
-  -- Setup nvim-cmp
-  local cmp = require('cmp')
-  local luasnip = require('luasnip')
-  
-  cmp.setup({
-    snippet = {
-      expand = function(args)
-        luasnip.lsp_expand(args.body)
-      end,
-    },
-    mapping = cmp.mapping.preset.insert({
-      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-Space>'] = cmp.mapping.complete(),
-      ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }),
-      ['<Tab>'] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_next_item()
-        elseif luasnip.expand_or_jumpable() then
-          luasnip.expand_or_jump()
-        else
-          fallback()
-        end
-      end, { 'i', 's' }),
-      ['<S-Tab>'] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_prev_item()
-        elseif luasnip.jumpable(-1) then
-          luasnip.jump(-1)
-        else
-          fallback()
-        end
-      end, { 'i', 's' }),
-    }),
-    sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      { name = 'luasnip' },
-    }, {
-      { name = 'buffer' },
-      { name = 'path' },
-    }),
-    window = {
-      documentation = {
-        border = 'double',
-      },
-      completion = {
-        border = 'double',
-      }
-    },
-    formatting = {
-      format = function(entry, vim_item)
-        -- Add source names
-        vim_item.menu = ({
-          nvim_lsp = "[LSP]",
-          luasnip = "[Snippet]",
-          buffer = "[Buffer]",
-          path = "[Path]",
-        })[entry.source.name]
-        return vim_item
-      end
-    }
-  })
-  
-  -- Command line completion setup
-  cmp.setup.cmdline(':', {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = cmp.config.sources({
-      { name = 'path' }
-    }, {
-      { name = 'cmdline' }
-    })
-  })
-  
-  -- Search completion setup
-  cmp.setup.cmdline('/', {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = {
-      { name = 'buffer' }
-    }
-  })
 end)
