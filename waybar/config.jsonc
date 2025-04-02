@@ -1,0 +1,125 @@
+{
+    "layer": "top",
+    "position": "top",
+    "spacing": 0,
+    "height": 32,
+    "modules-left": [
+        "custom/logo",
+        "hyprland/workspaces"
+    ],
+    "modules-center": [
+    ],
+    "modules-right": [
+        "tray",
+	"custom/kernel",
+	"cpu",
+        "memory",
+	"custom/diskfree",
+        "clock",
+        "pulseaudio",
+        "custom/power"
+    ],
+    "wlr/taskbar": {
+        "format": "{icon}",
+        "on-click": "activate",
+        "on-click-right": "fullscreen",
+        "icon-theme": "WhiteSur",
+        "icon-size": 25,
+        "tooltip-format": "{title}"
+    },
+    "hyprland/workspaces": {
+        "on-click": "activate",
+        "disable-scroll": true,
+        "all-outputs": true,
+        "warp-on-scroll": false,
+        "format": "{name}: {icon}",
+        "format-icons": {
+            "default": "",
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            //"active": "󱓻",
+            //"urgent": "󱓻"
+        },
+        "persistent_workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": [],
+            "7": [],
+            "8": [],
+            "9": []
+        }
+    },
+    "cpu": {
+        "format": "⧯ Cpu: {usage}%" ,
+        "tooltip": false
+    },
+    "memory": {
+        "interval": 5,
+        "format": "󰍛  Mem: {}%",
+        "max-length": 15
+    },
+    "tray": {
+        "spacing": 10
+    },
+    "clock": {
+        "tooltip-format": "{calendar}",
+        "format-alt": "  {:%a, %b %d %Y}",
+        "format": "⏱  {:%a, %b %d - %H:%M}"
+    },
+    "network": {
+        "format-wifi" : "{icon}",
+        "format-icons": ["󰤯","󰤟","󰤢","󰤥","󰤨"],
+        "format-ethernet": "󰀂",
+	"format-alt" : "󱛇",
+        "format-disconnected" : "󰖪",
+	"tooltip-format-wifi": "{icon} {essid}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+        "tooltip-format-ethernet": "󰀂  {ifname}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+	"tooltip-format-disconnected": "Disconnected",
+	"on-click": "~/.config/wofi/wifi/wifi.sh &",
+        "on-click-right": "~/.config/wofi/wifi/wifinew.sh &",
+	"interval": 5,
+	"nospacing": 1,
+    },
+    "pulseaudio": {
+        "format": "{icon}",
+        "format-bluetooth": "󰂰",
+        "nospacing": 1,
+        "tooltip-format": "Volume : {volume}%",
+        "format-muted": "󰝟",
+        "format-icons": {
+            "headphone": "",
+            "default": ["󰖀","󰕾",""]
+        },
+        "on-click": "pamixer -t",
+        "scroll-step": 1
+    },
+    "custom/logo": {
+        "format": "  ",
+        "tooltip": false,
+        "on-click": "~/.config/wofi/launchers/misc/launcher.sh &"
+    },
+        "custom/pacman": {
+	"format": "{}  ",
+	"interval": "once",
+	"exec": "pacman_packages",
+	"on-click": "update-system",
+	"signal": 8
+    },
+    "custom/kernel": {
+        "format": "❤ {}",
+	"interval": 3600,
+        "max-length": 20,
+         "exec": "uname -r"
+    },
+    "custom/power": {
+        "format": "󰤆",
+        "tooltip": false,
+        "on-click": "dm-logout -r &"
+    }
+}
