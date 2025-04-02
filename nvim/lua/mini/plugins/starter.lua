@@ -1,5 +1,5 @@
--- ~/.config/nvim/lua/mini/plugins/starter.lua
--- Configuration for mini.starter
+-- Edit this file at ~/.config/nvim/lua/mini/plugins/starter.lua
+-- Find and replace the Telescope entry with mini.pick
 
 local loader = require('mini.loader')
 
@@ -47,10 +47,11 @@ loader.load_now('starter', function()
       { name = 'Session',       action = 'lua MiniSessions.select()',        section = 'Sessions' },
       { name = 'Last session',  action = 'lua MiniSessions.read("last")',    section = 'Sessions' },
       { name = 'Open file',     action = 'lua MiniFiles.open()',             section = 'Files' },
-      { name = 'Recent files',  action = 'Telescope oldfiles',               section = 'Files' },
+      -- Replace Telescope with mini.pick or mini.visits
+      { name = 'Recent files',  action = 'lua MiniVisits.select_path()',     section = 'Files' },
       { name = 'Search',        action = 'lua MiniPick.builtin.grep_live()', section = 'Files' },
       { name = 'Neovim config', action = 'e $MYVIMRC',                       section = 'Settings' },
-      { name = 'Plugins',       action = 'Pick files cwd="' .. vim.fn.stdpath('data') .. '/site/pack/deps/opt"', section = 'Settings' },
+      { name = 'Plugins',       action = 'lua MiniPick.builtin.files({cwd = "' .. vim.fn.stdpath('data') .. '/site/pack/deps/opt"})', section = 'Settings' },
       { name = 'Lazy-load all', action = 'lua MiniDeps.now()',               section = 'Settings' },
       { name = 'Check health',  action = 'checkhealth',                      section = 'Settings' },
       { name = 'Quit',          action = 'qall',                             section = 'Sessions' },
