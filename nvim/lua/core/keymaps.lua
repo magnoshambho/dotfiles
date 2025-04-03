@@ -42,13 +42,13 @@ return now(function()
   -- Remove search highlighting
   map('n', '<Esc>', ':noh<CR>', opts)
   
-  -- Close buffers
-  map('n', '<Leader>q', ':bd<CR>', { desc = 'Close buffer' })
-  map('n', '<Leader>Q', ':bd!<CR>', { desc = 'Force close buffer' })
+  -- Close buffers (REMOVED)
+  -- map('n', '<Leader>q', ':bd<CR>', { desc = 'Close buffer' })
+  -- map('n', '<Leader>Q', ':bd!<CR>', { desc = 'Force close buffer' })
   
-  -- Save file
-  map('n', '<Leader>w', ':w<CR>', { desc = 'Save file' })
-  map('n', '<Leader>W', ':wa<CR>', { desc = 'Save all files' })
+  -- Save file (REMOVED)
+  -- map('n', '<Leader>w', ':w<CR>', { desc = 'Save file' })
+  -- map('n', '<Leader>W', ':wa<CR>', { desc = 'Save all files' })
   
   -- Quit
   map('n', '<Leader>qq', ':qa<CR>', { desc = 'Quit all' })
@@ -139,10 +139,11 @@ return now(function()
       map('n', '<Leader>om', '<Cmd>lua MiniStarter.open()<CR>', { desc = 'Open start menu' })
     end
     
-    if package.loaded['mini.files'] then
-      map('n', '<Leader>e', '<Cmd>lua MiniFiles.open()<CR>', { desc = 'Open file explorer' })
-      map('n', '<Leader>E', '<Cmd>lua MiniFiles.open(vim.fn.getcwd())<CR>', { desc = 'Open file explorer at cwd' })
-    end
+    -- REMOVED file explorer mappings
+    -- if package.loaded['mini.files'] then
+    --   map('n', '<Leader>e', '<Cmd>lua MiniFiles.open()<CR>', { desc = 'Open file explorer' })
+    --   map('n', '<Leader>E', '<Cmd>lua MiniFiles.open(vim.fn.getcwd())<CR>', { desc = 'Open file explorer at cwd' })
+    -- end
     
     -- mini.extra (diagnostics) - if available
     if package.loaded['mini.extra'] then
@@ -202,10 +203,10 @@ return now(function()
     end
     
     -- mini.trailspace - trailing whitespace operations
+    -- CHANGED: Changed prefix from <Leader>w to <Leader>ts for "trailing space"
     if package.loaded['mini.trailspace'] then
-      -- Changed from t to avoid conflicts with the t motion in Vim
-      map('n', '<Leader>ws', '<Cmd>lua MiniTrailspace.trim()<CR>', { desc = 'Trim trailing whitespace' })
-      map('n', '<Leader>wt', '<Cmd>lua vim.b.minitrailspace_disable = not vim.b.minitrailspace_disable<CR>', 
+      map('n', '<Leader>ts', '<Cmd>lua MiniTrailspace.trim()<CR>', { desc = 'Trim trailing whitespace' })
+      map('n', '<Leader>tt', '<Cmd>lua vim.b.minitrailspace_disable = not vim.b.minitrailspace_disable<CR>', 
           { desc = 'Toggle trailing whitespace highlighting' })
     end
     
@@ -223,6 +224,11 @@ return now(function()
       map('n', 'gS', '<Cmd>lua MiniSplitjoin.toggle()<CR>', { desc = 'Toggle split/join' })
     end
     
+    -- REMOVE zoom mapping
+    -- if package.loaded['mini.misc'] then
+    --   map('n', '<Leader>z', function() MiniMisc.zoom() end, { desc = 'Zoom buffer' })
+    -- end
+    
     -- Register mappings with whichkey if available
     if package.loaded["which-key"] then
       local wk = require("which-key")
@@ -231,7 +237,7 @@ return now(function()
           l = { name = "LSP" },
           i = { name = "Issues/Diagnostics" }, -- Changed from 'x' to 'i'
           q = { name = "Quit/Close" },
-          w = { name = "Write/Save/Whitespace" },
+          t = { name = "Trailing space" }, -- CHANGED: was 'w' for Write/Save/Whitespace
           r = { name = "Replace/Reload" },
           s = { name = "Search/Sessions" },
           e = { name = "Explorer" },
