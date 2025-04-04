@@ -123,4 +123,32 @@ return now(function()
     config.capabilities = capabilities
     lspconfig[server_name].setup(config)
   end
+
+  -- Python method completion
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = "python",
+    callback = function()
+      -- Enhanced way to show method completion after dot
+      vim.keymap.set('i', '.', function()
+        -- Insert dot first
+        vim.api.nvim_put({''}, 'c', false, true)
+        
+        -- Then trigger completion with a slight delay
+        vim.schedule(function()
+          -- Try different methods to ensure completion works
+          if vim.lsp.buf.completion then
+            vim.lsp.buf.completion()
+          else
+            -- Fall back to omnifunc
+            local col = vim.fn.col('.')
+            vim.fn.complete(col, vim.lsp.omnifunc(1, ''))
+          end
+        end)
+        
+        -- Return the dot character
+        return '.'
+      end, { expr = true, buffer = true })
+    end
+  })
 end)
+
